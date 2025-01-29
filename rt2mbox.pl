@@ -12,6 +12,7 @@ GetOptions(
     'password|p=s'     => \my $password,
     'rtname|n=s'       => \my $rtname,
     'no-autoreplies|x' => \my $noauto,
+    'queues|q=s'       => \my @queues,
 )  or require Pod::Usage && Pod::Usage::pod2usage(2);
 
 require Pod::Usage && Pod::Usage::pod2usage(1) unless $dsn && $rtname;
@@ -58,6 +59,10 @@ $qsel->execute;
 $qsel->bind_columns( \my ( $qid, $qname, $correspond, $comment ) );
 
 while ($qsel->fetch) {
+    if (@queues && ! grep { $_ eq $qid } @queues) {
+        next;
+    }
+
     # Normalize the name.
     $qname =~ s{[/.]}{}g;
 
