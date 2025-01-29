@@ -28,30 +28,30 @@ END {
 }
 
 my $qsel = $dbh->prepare(q{
-    SELECT id, name, correspondaddress, commentaddress
-    FROM queues
-    ORDER BY name
+    SELECT id, Name, CorrespondAddress, CommentAddress
+    FROM Queues
+    ORDER BY Name
 });
 
 
-my $exclude = $noauto ? "\n       AND users.id <> 1" : '';
+my $exclude = $noauto ? "\n       AND Users.id <> 1" : '';
 my $epoch   = $dsn =~ /^dbi:Pg/
-    ? 'EXTRACT( EPOCH FROM attachments.created )'
-    : 'UNIX_TIMESTAMP( attachments.created )';
+    ? 'EXTRACT( EPOCH FROM Attachments.Created )'
+    : 'UNIX_TIMESTAMP( Attachments.Created )';
 
 my $msel = $dbh->prepare(qq{
-    SELECT tickets.id, transactions.id, transactions.type, attachments.id,
-        parent, users.emailaddress,
-        contenttype, COALESCE( contentencoding, '' ),
+    SELECT Tickets.id, Transactions.id, Transactions.Type, Attachments.id,
+        Parent, Users.EmailAddress,
+        ContentType, COALESCE( ContentEncoding, '' ),
         $epoch,
-        headers, content, tickets.subject
-    FROM tickets, transactions, attachments, users
-    WHERE tickets.queue = ?
-    AND tickets.id = transactions.objectid
-    AND transactions.objecttype = ?
-    AND transactions.id = attachments.transactionid
-    AND transactions.creator = users.id$exclude
-    ORDER BY transactions.id, attachments.id, parent
+        Headers, Content, Tickets.Subject
+    FROM Tickets, Transactions, Attachments, Users
+    WHERE Tickets.Queue = ?
+    AND Tickets.id = Transactions.ObjectId
+    AND Transactions.ObjectType = ?
+    AND Transactions.id = Attachments.TransactionId
+    AND Transactions.Creator = Users.id$exclude
+    ORDER BY Transactions.id, Attachments.id, Parent
 });
 
 $qsel->execute;
