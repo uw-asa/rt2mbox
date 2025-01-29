@@ -172,6 +172,7 @@ rt2mbox --dsn dbi:Pgdbname=rt3 --username rt_user --password secret
 -u --username USERNAME  RT database username.
 -p --password PASSWORD  RT database password.
 -x --no-autoreplies     Do not export autoreply messages.
+-q --queue QUEUENUM     Only export specific queue. (Can specify multiple times.)
 
 =head1 Author
 
