@@ -12,7 +12,7 @@ GetOptions(
     'password|p=s'     => \my $password,
     'rtname|n=s'       => \my $rtname,
     'no-autoreplies|x' => \my $noauto,
-    'queues|q=s'       => \my @queues,
+    'queue|q=s'        => \my @queues,
 )  or require Pod::Usage && Pod::Usage::pod2usage(2);
 
 require Pod::Usage && Pod::Usage::pod2usage(1) unless $dsn && $rtname;
